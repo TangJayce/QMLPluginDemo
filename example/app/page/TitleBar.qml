@@ -43,17 +43,6 @@ Rectangle {
         anchors.fill: parent
         spacing: 12
         Item {Layout.preferredWidth: 12}
-        Image {
-            source: "qrc:/icons/logo_moza.svg"
-            width: 77.89
-            height: 16
-            sourceSize: Qt.size(width, height)
-            layer.enabled: true
-            layer.effect: ColorOverlay {
-                color: "#FFFFFF"
-            }
-            opacity: 0.65
-        }
         Label {
             color: "#FFFFFF"
             opacity: 0.65

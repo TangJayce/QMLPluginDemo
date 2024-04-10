@@ -18,7 +18,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick QuickControls2 REQUIRED
 file(GLOB_RECURSE source_files "src/*.cc" "src/*.h")
 file(GLOB_RECURSE qml_files qml/*.qml)
 
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME}
         ${source_files}
         qml/qmldir
 )
@@ -42,12 +42,12 @@ install(CODE "execute_process(
 add_executable(Main main.cc)
 
 # demo
-#add_executable(Demo example/demo.cc example/app/qml.qrc)
-#target_include_directories(Demo PRIVATE ${PROJECT_SOURCE_DIR}/src)
-#target_link_libraries(Demo PRIVATE
-#        ${PROJECT_NAME}
-#        Qt${QT_VERSION_MAJOR}::Core
-#        Qt${QT_VERSION_MAJOR}::Quick
-#        Qt${QT_VERSION_MAJOR}::QuickControls2
-#        Qt${QT_VERSION_MAJOR}::Qml
-#)
+add_executable(Demo example/demo.cc example/app/qml.qrc)
+target_include_directories(Demo PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(Demo PRIVATE
+       ${PROJECT_NAME}
+       Qt${QT_VERSION_MAJOR}::Core
+       Qt${QT_VERSION_MAJOR}::Quick
+       Qt${QT_VERSION_MAJOR}::QuickControls2
+       Qt${QT_VERSION_MAJOR}::Qml
+)

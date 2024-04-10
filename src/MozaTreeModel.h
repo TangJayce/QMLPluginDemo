@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <set>
 #include <QAbstractListModel>
 #include <QSet>
 
