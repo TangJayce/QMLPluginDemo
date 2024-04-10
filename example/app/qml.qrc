@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>page/MainPage.qml</file>
+        <file>page/TitleBar.qml</file>
+        <file>component/MozaScrollBar.qml</file>
+        <file>component/MozaScrollView.qml</file>
+        <file>component/MozaTreeItemDelegate.qml</file>
+        <file>component/MozaTreeView.qml</file>
+        <file>component/RadiusRectangle.qml</file>
+        <file>component/MozaButton.qml</file>
+        <file>icons/close_normal.svg</file>
+        <file>icons/down_normal.svg</file>
+        <file>icons/full_screen_normal.svg</file>
+        <file>icons/minimize_normal.svg</file>
+    </qresource>
+</RCC>

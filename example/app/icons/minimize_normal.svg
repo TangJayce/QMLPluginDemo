@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>minimize_normal</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="画板" transform="translate(-904.000000, -16.000000)" stroke="#B3B3B3">
+            <g id="最小化-常规" transform="translate(904.000000, 16.000000)">
+                <line x1="4" y1="10.5" x2="12" y2="10.5" id="直线-2"></line>
+            </g>
+        </g>
+    </g>
+</svg>
