@@ -187,7 +187,7 @@ void MozaTreeModel::showModelChildItems(const MozaTreeModel::TreeItem &item, int
         } else {
             status = NONE_SELECT;
         }
-        const TreeItem treeItem(cur, item.depth + 1, expanded, status);
+        const TreeItem treeItem {cur, item.depth + 1, expanded, status};
         m_currentItems.insert(++startIdx, treeItem);
         if (expanded) {
             showModelChildItems(treeItem, startIdx);
