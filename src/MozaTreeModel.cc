@@ -17,6 +17,8 @@ MozaTreeModel::MozaTreeModel(MozaTree* tree, QObject *parent)
     m_roleNames.insert(EXPANDED, "expanded");
     m_roleNames.insert(HAS_CHILD, "hasChild");
     m_roleNames.insert(SELECTED_STATUS, "selectedStatus");
+    m_roleNames.insert(HAS_TOP_RADIUS, "hasTopRadius");
+    m_roleNames.insert(HAS_BOTTOM_RADIUS, "hasBottomRadius");
 
     if (m_rootNode && m_rootNode->hasChild()) {
         dfs(m_rootNode, 1);
@@ -71,6 +73,12 @@ QVariant MozaTreeModel::data(const QModelIndex &index, int role) const
             return item.value->hasChild();
         case SELECTED_STATUS:
             return item.selectedStatus;
+        case HAS_TOP_RADIUS:
+            if (row == 0) return true;
+            return m_currentItems[row - 1].selectedStatus == NONE_SELECT;
+        case HAS_BOTTOM_RADIUS:
+            if (row == m_currentItems.size() - 1) return true;
+            return m_currentItems[row + 1].selectedStatus == NONE_SELECT;
         default:
             return {};
     }
@@ -221,7 +229,9 @@ void MozaTreeModel::switchSelect(int n)
         lastIndex = qMax(lastIndex, subLastIndex);
     }
 
-    emit dataChanged(createIndex(firstIndex, 0), createIndex(lastIndex, 0), {SELECTED_STATUS});
+    emit dataChanged(createIndex(firstIndex, 0),
+                     createIndex(lastIndex, 0),
+                     {SELECTED_STATUS, HAS_TOP_RADIUS, HAS_BOTTOM_RADIUS});
 }
 
 void MozaTreeModel::attachSelect(int n)
@@ -242,7 +252,7 @@ void MozaTreeModel::attachSelect(int n)
         currentItem.selectedStatus = NONE_SELECT;
         currentSelectedStatus = NONE_SELECT;
     }
-    int lastIndex = n;
+    int firstIndex = n, lastIndex = n;
     if (currentItem.value->hasChild() && currentItem.expanded) {
         int subLastIndex = lastChildIndex(currentItem.value->child(currentItem.value->childCount() - 1));
         for (int i = n + 1; i <= subLastIndex; ++i) {
@@ -252,14 +262,18 @@ void MozaTreeModel::attachSelect(int n)
         }
         lastIndex = qMax(lastIndex, subLastIndex);
     }
-    emit dataChanged(createIndex(n, 0), createIndex(lastIndex, 0), {SELECTED_STATUS});
+    if (firstIndex > 0 && m_currentItems[firstIndex - 1].selectedStatus != NONE_SELECT) { --firstIndex; }
+    if (lastIndex < m_currentItems.size() - 1 && m_currentItems[lastIndex + 1].selectedStatus != NONE_SELECT) { ++lastIndex; }
+    emit dataChanged(createIndex(firstIndex, 0),
+                     createIndex(lastIndex, 0),
+                     {SELECTED_STATUS, HAS_TOP_RADIUS, HAS_BOTTOM_RADIUS});
 }
 
 void MozaTreeModel::multipleSelect(int prev, int cur)
 {
     int start = qMax(qMin(prev, cur), 0);
     int last = qMin(qMax(prev, cur), m_currentItems.size() - 1);
-    int startIndex = start, lastIndex = last;
+    int firstIndex = start, lastIndex = last;
     for (int i = start; i <= last; ++i) {
         auto &currentItem = m_currentItems[i];
         if (currentItem.selectedStatus != NONE_SELECT) { continue; }
@@ -275,7 +289,11 @@ void MozaTreeModel::multipleSelect(int prev, int cur)
             lastIndex = qMax(lastIndex, subLastIndex);
         }
     }
-    emit dataChanged(createIndex(startIndex, 0), createIndex(lastIndex, 0), {SELECTED_STATUS});
+    if (firstIndex > 0 && m_currentItems[firstIndex - 1].selectedStatus != NONE_SELECT) { --firstIndex; }
+    if (lastIndex < m_currentItems.size() - 1 && m_currentItems[lastIndex + 1].selectedStatus != NONE_SELECT) { ++lastIndex; }
+    emit dataChanged(createIndex(firstIndex, 0),
+                     createIndex(lastIndex, 0),
+                     {SELECTED_STATUS, HAS_TOP_RADIUS, HAS_BOTTOM_RADIUS});
 }
 
 int MozaTreeModel::frameIndex() const

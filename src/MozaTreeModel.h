@@ -64,7 +64,9 @@ private:
         DEPTH,
         EXPANDED,
         HAS_CHILD,
-        SELECTED_STATUS
+        SELECTED_STATUS,
+        HAS_TOP_RADIUS,
+        HAS_BOTTOM_RADIUS
     };
     struct TreeItem {
         MozaTreeNode* value;
