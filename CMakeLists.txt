@@ -18,7 +18,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick QuickControls2 REQUIRED
 file(GLOB_RECURSE source_files "src/*.cc" "src/*.h")
 file(GLOB_RECURSE qml_files qml/*.qml)
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
         ${source_files}
         qml/qmldir
 )
@@ -31,21 +31,32 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 set(QT5_BIN_PATH ${Qt5_DIR}/../../../bin)
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PLUGIN_PATH})
+install(TARGETS ${PROJECT_NAME}
+        RUNTIME DESTINATION ${PLUGIN_PATH}
+)
 install(FILES qml/qmldir ${qml_files} DESTINATION ${PLUGIN_PATH})
 # 安装完成后执行脚本生成qmltypes
 install(CODE "execute_process(
-        COMMAND ${QT5_BIN_PATH}/qmlplugindump.exe MOZA.${MODULE_NAME} 1.0 ${OUTPUT_PATH} -nonrelocatable -output ${PLUGIN_PATH}/plugins.qmltypes
+        COMMAND ${QT5_BIN_PATH}/qmlplugindump.exe MOZA.${MODULE_NAME} 1.0 ${OUTPUT_PATH}
+        -nonrelocatable -output ${PLUGIN_PATH}/plugins.qmltypes
 )")
 
 # install自动生成
 add_executable(Main main.cc)
 
 # demo
-add_executable(Demo example/demo.cc example/app/qml.qrc)
+add_executable(Demo
+        example/demo.cc
+        example/app/qml.qrc
+        src/MozaTreeModel.h
+        src/MozaTreeModel.cc
+        src/MozaTree.h
+        src/MozaTree.cc
+        src/MozaEditorFileManager.h
+        src/MozaEditorFileManager.cc
+)
 target_include_directories(Demo PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(Demo PRIVATE
-       ${PROJECT_NAME}
        Qt${QT_VERSION_MAJOR}::Core
        Qt${QT_VERSION_MAJOR}::Quick
        Qt${QT_VERSION_MAJOR}::QuickControls2
