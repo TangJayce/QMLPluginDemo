@@ -7,14 +7,15 @@ import QtGraphicalEffects 1.15
 T.Button {
     id: control
 
+    property bool primary: false
+
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
     padding: 0
-
-    property bool primary: false
     font.bold: true
+    focusPolicy: Qt.NoFocus
 
     QtObject {
         id: config

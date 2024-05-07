@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.14)
 project(QMLPlugin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -48,12 +48,7 @@ add_executable(Main main.cc)
 add_executable(Demo
         example/demo.cc
         example/app/qml.qrc
-        src/MozaTreeModel.h
-        src/MozaTreeModel.cc
-        src/MozaTree.h
-        src/MozaTree.cc
-        src/MozaEditorFileManager.h
-        src/MozaEditorFileManager.cc
+        ${source_files}
 )
 target_include_directories(Demo PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(Demo PRIVATE

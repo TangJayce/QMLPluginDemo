@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>layer_lock_normal</title>
+    <g id="页面-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="同时选中多个元素" transform="translate(-212.000000, -493.000000)" stroke="#B3B3B3" stroke-width="1.5">
+            <g id="左" transform="translate(0.000000, 80.000000)">
+                <g id="图层选择" transform="translate(16.000000, 213.000000)">
+                    <g id="小锁定-normal" transform="translate(196.000000, 200.000000)">
+                        <g id="编组-2" transform="translate(4.000000, 3.000000)">
+                            <rect id="矩形" x="0" y="7" width="12" height="7" rx="1"></rect>
+                            <path d="M6,0 C7.93299662,-3.55085719e-16 9.5,1.56700338 9.5,3.5 L9.5,7 L9.5,7 L2.5,7 L2.5,3.5 C2.5,1.56700338 4.06700338,2.36723813e-16 6,0 Z" id="矩形备份"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

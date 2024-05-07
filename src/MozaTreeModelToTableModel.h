@@ -9,7 +9,7 @@
 #include <QAbstractItemModel>
 #include <QItemSelectionModel>
 
-namespace moza::component
+namespace MOZA::DashboardEditor
 {
 
 class MozaTreeModelToTableModel : public QAbstractItemModel

@@ -1,17 +1,36 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>page/ArtBoard.qml</file>
+        <file>page/ContentLayer.qml</file>
+        <file>page/MainPage.qml</file>
         <file>page/MainPage.qml</file>
         <file>page/TitleBar.qml</file>
-        <file>component/MozaScrollBar.qml</file>
-        <file>component/MozaScrollView.qml</file>
-        <file>component/MozaTreeItemDelegate.qml</file>
-        <file>component/MozaTreeView.qml</file>
-        <file>component/RadiusRectangle.qml</file>
-        <file>component/MozaButton.qml</file>
+        <file>layout/MozaButton.qml</file>
+        <file>layout/MozaContentLayerItem.qml</file>
+        <file>layout/MozaRuler.qml</file>
+        <file>layout/MozaScrollBar.qml</file>
+        <file>layout/MozaScrollView.qml</file>
+        <file>layout/MozaRadiusRectangle.qml</file>
         <file>icons/close_normal.svg</file>
         <file>icons/down_normal.svg</file>
         <file>icons/full_screen_normal.svg</file>
+        <file>icons/icon_invisible.svg</file>
+        <file>icons/icon_lock.svg</file>
+        <file>icons/icon_text.svg</file>
+        <file>icons/icon_unlock.svg</file>
+        <file>icons/icon_visible.svg</file>
         <file>icons/minimize_normal.svg</file>
+        <file>icons/scaleplate_adaptation_normal.svg</file>
+        <file>component/TextDashboardElement.qml</file>
+        <file>component/BoxDashboardElement.qml</file>
+        <file>component/EllipseDashboardElement.qml</file>
+        <file>component/ImageDashboardElement.qml</file>
+        <file>component/TelemetryDashboardElement.qml</file>
+        <file>component/MapDashboardElement.qml</file>
+        <file>component/MeterDashboardElement.qml</file>
+        <file>component/MozaDashboardElement.qml</file>
+        <file>component/MozaTreeView.qml</file>
+        <file>layout/MozaResizableBox.qml</file>
     </qresource>
 </RCC>

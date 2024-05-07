@@ -7,7 +7,7 @@
 #include <QtCore/qstack.h>
 #include <QtCore/qdebug.h>
 
-namespace moza::component
+namespace MOZA::DashboardEditor
 {
 
 MozaTreeModelToTableModel::MozaTreeModelToTableModel(QObject *parent)

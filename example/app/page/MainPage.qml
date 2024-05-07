@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.15
 
-import "../component"
+import "../layout"
 import MOZA.DashboardEditor 1.0
 
 Page {
@@ -37,126 +37,86 @@ Page {
             RowLayout {
                 spacing: 12
                 MozaButton {
-                    text: "展开"
+                    text: "切换标尺"
                     onClicked: {
-                        if (showRec.state === "SHOW") {
-                            showRec.state = "HIDE"
-                        } else {
-                            showRec.state = "SHOW"
-                        }
+                        artBoard.enableRuler = !artBoard.enableRuler
                     }
                 }
                 MozaButton {
-                    text: "异步"
+                    text: "文本"
                     onClicked: {
-                        new Promise(function (resolve, reject) {
-                            console.log("开始")
-                            resolve();
-                        }).then(function () {
-                            return new Promise(function (resolve, reject) {
-                                console.log("中间")
-                                resolve();
-                            });
-                        }).then(function () {
-                            console.log("结束")
-                            resolve();
-                        });
+                        screenModel.move(1, 2, 1)
                     }
+                }
+                MozaButton {
+                    text: "图片"
+                }
+                MozaButton {
+                    text: "椭圆"
+                }
+                MozaButton {
+                    text: "方框"
+                }
+                MozaButton {
+                    text: "预绑定遥测"
+                }
+                MozaButton {
+                    text: "地图"
+                }
+                MozaButton {
+                    text: "刻度仪表"
                 }
             }
 
             RowLayout {
                 ColumnLayout {
-                    MozaTreeView {
-                        id: mozaTreeView
-                        Layout.preferredWidth: 320
-                        Layout.fillHeight: true
-                        treeModel: MozaEditorFileManager.getModelDataFromFile("D:/MyFiles/test/editor.json")
+                    Repeater {
+                        model: ListModel {
+                            id: screenModel
+                            ListElement {name: "screen 233"}
+                            ListElement {name: "jayce"}
+                            ListElement {name: "adil"}
+                        }
+                        delegate: Rectangle {
+                            Layout.preferredWidth: 260
+                            Layout.preferredHeight: 20
+                            color: '#2D2F31'
+                            opacity: 0.8
+                            radius: 4
+                            Text {
+                                anchors.centerIn: parent
+                                text: model.name
+                                color: "#DADADA"
+                            }
+                            Component.onCompleted: {
+                                console.log("新建", model.name)
+                            }
+                            Component.onDestruction: {
+                                console.log("销毁", model.name)
+                            }
+                        }
                     }
-                    Rectangle {
-                        color: 'red'
-                        opacity: 0.5
-                        radius: 4
-                        Layout.preferredWidth: 320
-                        Layout.preferredHeight: 50
+                    ContentLayer {
+                        id: mozaTreeView
+                        Layout.preferredWidth: 260
+                        Layout.fillHeight: true
+                        tree: _p.tree
+                        interactor: _p.interactor
                     }
                 }
 
-                ColumnLayout {
-                    spacing: 16
-                    Rectangle {
-                        id: showRec
-                        state: "SHOW"
-                        states: [
-                            State {name: "SHOW"},
-                            State {name: "HIDE"}
-                        ]
+                ArtBoard {
+                    id: artBoard
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 600
+                    tree: _p.tree
+                    interactor: _p.interactor
+                }
 
-                        transitions: [
-                            Transition {
-                                from: "SHOW"
-                                to: "HIDE"
-                                SequentialAnimation {
-                                    NumberAnimation {
-                                        target: showRec
-                                        property: "height"
-                                        from: 200
-                                        to: 0
-                                        duration: 200
-                                    }
-                                    PropertyAction {
-                                        target: showRec
-                                        property: "visible"
-                                        value: false
-                                    }
-                                }
-                            },
-                            Transition {
-                                from: "HIDE"
-                                to: "SHOW"
-                                SequentialAnimation {
-                                    PropertyAction {
-                                        target: showRec
-                                        property: "visible"
-                                        value: true
-                                    }
-                                    NumberAnimation {
-                                        target: showRec
-                                        property: "height"
-                                        from: 0
-                                        to: 200
-                                        duration: 200
-                                    }
-                                }
-                            }
-                        ]
-                        Layout.preferredHeight: 200
-                        Layout.fillWidth: true
-                        color: "yellow"
-                        radius: 8
-                        layer.enabled: true
-                        layer.effect: DropShadow {
-                            radius: 16
-                            samples: 16
-                            color: "#24222D37"
-                            horizontalOffset: 0
-                            verticalOffset: 4
-                        }
-                    }
-                    Rectangle {
-                        Layout.preferredHeight: 212
-                        Layout.fillWidth: true
-                        color: "#FDFDFE"
-                        radius: 8
-                        layer.enabled: true
-                        layer.effect: DropShadow {
-                            radius: 16
-                            samples: 16
-                            color: "#24222D37"
-                            horizontalOffset: 0
-                            verticalOffset: 4
-                        }
-                    }
+                Rectangle {
+                    Layout.preferredWidth: 302
+                    Layout.fillHeight: true
+                    color: "#2D2F31"
                 }
             }
         }
@@ -177,4 +137,16 @@ Page {
             }
         }
     }
+
+    QtObject {
+        id: _p
+        property ElementTree tree: DashboardEditorManager.parseJsonFile("D:/MyFiles/test/editor.json")
+        property ElementInteractor interactor: ElementInteractor {
+            tree: _p.tree
+            store: DashboardEditorManager.getDashboardStore()
+        }
+    }
+
+    focus: true
+    Keys.forwardTo: [artBoard]
 }

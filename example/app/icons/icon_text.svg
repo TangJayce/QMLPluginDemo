@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>layer_text_pressed</title>
+    <g id="页面-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="选中组" transform="translate(-48.000000, -465.000000)" stroke="#FFFFFF" stroke-width="1.5">
+            <g id="左" transform="translate(0.000000, 80.000000)">
+                <g id="图层选择" transform="translate(16.000000, 213.000000)">
+                    <g id="文字-选中备份" transform="translate(32.000000, 172.000000)">
+                        <rect id="矩形" x="2.5" y="2.5" width="15" height="15" rx="1.25"></rect>
+                        <polyline id="路径" stroke-linecap="round" points="6.66666667 7.91666667 6.66666667 6.66666667 13.3333333 6.66666667 13.3333333 7.91666667"></polyline>
+                        <line x1="9.16666667" y1="14.1666667" x2="10.8333333" y2="14.1666667" id="路径" stroke-linecap="round"></line>
+                        <line x1="10" y1="7.5" x2="10" y2="14.1666667" id="路径" stroke-linecap="round"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

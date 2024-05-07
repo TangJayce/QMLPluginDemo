@@ -5,8 +5,7 @@
 #include <QGuiApplication>
 #include <QWindow>
 #include <QQmlApplicationEngine>
-#include <MozaTreeModel.h>
-#include <MozaEditorFileManager.h>
+#include "QMLPlugin.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,11 +16,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.addImportPath(QStringLiteral("qrc:/"));
-    qmlRegisterUncreatableType<moza::component::MozaTreeModel>("MOZA.DashboardEditor", 1, 0, "MozaTreeModel", "Cannot create MozaTreeModel");
-    qmlRegisterSingletonType<moza::component::MozaEditorFileManager>("MOZA.DashboardEditor", 1, 0, "MozaEditorFileManager",
-                                                    [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-                                                        return moza::component::MozaEditorFileManager::instance();
-                                                    });
+
+    MOZA::DashboardEditor::QMLPlugin::globalRegisterTypes();
+
+    QSurfaceFormat format;
+    format.setSamples(4);
+    QSurfaceFormat::setDefaultFormat(format);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

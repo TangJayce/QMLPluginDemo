@@ -8,8 +8,8 @@ import "./page"
 Window {
     id: mainWindow
     visible: true
-    width: 1000
-    height: 680
+    width: 1440
+    height: 810
     minimumHeight: 120
     minimumWidth: 360
     flags: Qt.Window | Qt.FramelessWindowHint

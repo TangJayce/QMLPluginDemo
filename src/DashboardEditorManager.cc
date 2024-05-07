@@ -2,24 +2,24 @@
 // Created by Jayce on 2024/3/22.
 //
 
-#include "MozaEditorFileManager.h"
+#include "DashboardEditorManager.h"
 
 #include <QFile>
 #include <QDebug>
 #include <QJsonParseError>
 #include <QJsonDocument>
-#include "MozaTree.h"
+#include "ElementTree.h"
 
-namespace moza::component
+namespace MOZA::DashboardEditor
 {
 
-MozaEditorFileManager *MozaEditorFileManager::instance()
+DashboardEditorManager *DashboardEditorManager::instance()
 {
-    static auto obj = new MozaEditorFileManager;
+    static auto obj = new DashboardEditorManager;
     return obj;
 }
 
-MozaTreeModel* MozaEditorFileManager::getModelDataFromFile(const QString &filepath)
+ElementTree* DashboardEditorManager::parseJsonFile(const QString &filepath)
 {
     QFile file(filepath);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -38,7 +38,13 @@ MozaTreeModel* MozaEditorFileManager::getModelDataFromFile(const QString &filepa
         return {};
     }
 
-    return new MozaTreeModel(new MozaTree(doc.object()), this);
+    return new ElementTree(doc.object());
+}
+
+DashboardEditorManager::ElementType DashboardEditorManager::getElementType(int id)
+{
+    if (id < ElementType::TEXT || id > ElementType::METER) { return (ElementType)(id % (ElementType::METER + 1)); }
+    return (ElementType)id;
 }
 
 }
