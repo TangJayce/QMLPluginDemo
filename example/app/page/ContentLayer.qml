@@ -21,20 +21,28 @@ MozaTreeView {
     // }
     delegate: MozaContentLayerItem {
         id: delegateItem
-        property var props: DashboardEditorManager.getDashboardStore().getProperties(model.elementID)
+        property var props: DashboardEditorManager.getDashboardStore().getCustomProperties(model.elementID)
         text: "value: " + model.elementID + ", depth: " + model.depth
         width: root.availableWidth
         enableHide: root.enableHide
         enableLock: root.enableLock
-        // hideStatus: model.hideStatus
-//        lockStatus: props.selected
+        hideStatus: {
+            if (props.hidden) return 1
+            if (props.parentHidden) return 2
+            return 0
+        }
+        lockStatus: {
+            if (props.locked) return 1
+            if (props.parentLocked) return 2
+            return 0
+        }
         selectStatus: {
             if (props.selected) return 1
             if (props.parentSelected) return 2
             return 0
         }
-        // onToggleHide: root.treeModel.toggleHide(model.index)
-//        onToggleLock: props.selected = !props.selected
+        onToggleHide: root.interactor.toggleHide(model.elementID)
+        onToggleLock: root.interactor.toggleLock(model.elementID)
         // highlighted: model.index === root.treeModel.frameIndex
         // onHoveredChanged: {
         //     if (hovered && !_p.hasItemDrag) {
@@ -60,9 +68,9 @@ MozaTreeView {
             _p.gapIndex = cnt
             _p.highlightYAxis = cnt * delegateItem.height
         }
-         onSwitchSelectItem: root.interactor.selectedElements = [model.elementID]
-        // onAttachSelectItem: root.treeModel.attachSelect(model.index)
-        // onMultipleSelectItem: root.treeModel.multipleSelect(ListView.view.currentIndex, model.index)
+        onSwitchSelectItem: root.interactor.switchSelect(model.elementID)
+        // onAttachSelectItem: root.interactor.attachSelect(model.index)
+        // onMultipleSelectItem: root.interactor.multipleSelect(ListView.view.currentIndex, model.index)
         onToggleExpand: {
             if (model.expanded) {
                 root.treeModel.collapseRow(index)

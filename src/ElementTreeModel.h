@@ -37,8 +37,6 @@ public:
 //    Q_INVOKABLE void attachSelect(int n);
 //    Q_INVOKABLE void multipleSelect(int prev, int cur);
 //    Q_INVOKABLE void moveSingleItem(int itemIdx, int gapIdx);
-//    Q_INVOKABLE void toggleHide(int n);
-//    Q_INVOKABLE void toggleLock(int n);
 
     int itemIndex(int elementID) const;
     int countVisibleItem(MozaTreeNode *node) const;

@@ -200,13 +200,23 @@ QList<int> ElementTree::getElementListByDFS(bool hasRoot)
     return ans;
 }
 
-void ElementTree::dfs(QList<int> &list, MozaTreeNode *node)
+QList<int> ElementTree::getLeafNodeListByDFS()
+{
+    QList<int> ans;
+    if (!m_root) { return ans; }
+    dfs(ans, m_root, true);
+    return ans;
+}
+
+void ElementTree::dfs(QList<int> &list, MozaTreeNode *node, bool onlyLeaf)
 {
     for (int i = 0; i < node->childCount(); ++i) {
         auto cur = node->child(i);
-        list.append(cur->data());
+        if (!onlyLeaf || !cur->hasChild()) {
+            list.append(cur->data());
+        }
         if (cur->hasChild()) {
-            dfs(list, cur);
+            dfs(list, cur, onlyLeaf);
         }
     }
 }

@@ -13,6 +13,7 @@
 #include "ContentLayerListModel.h"
 #include "ElementInteractor.h"
 #include "DashboardStore.h"
+#include "CustomPropertyGroup.h"
 
 namespace MOZA::DashboardEditor
 {
@@ -27,6 +28,7 @@ void QMLPlugin::globalRegisterTypes()
     qmlRegisterUncreatableType<ElementTree>("MOZA.DashboardEditor", 1, 0, "ElementTree", "Cannot create ElementTree");
     qmlRegisterUncreatableType<DashboardStore>("MOZA.DashboardEditor", 1, 0, "DashboardStore", "Cannot create DashboardStore");
     qmlRegisterUncreatableType<QQmlPropertyMap>("MOZA.DashboardEditor", 1, 0, "QmlPropertyMap", "Cannot create QmlPropertyMap");
+    qmlRegisterUncreatableType<CustomPropertyGroup>("MOZA.DashboardEditor", 1, 0, "CustomPropertyGroup", "Cannot create CustomPropertyGroup");
     qmlRegisterType<ElementTreeModel>("MOZA.DashboardEditor", 1, 0, "ElementTreeModel");
     qmlRegisterType<ArtBoardListModel>("MOZA.DashboardEditor", 1, 0, "ArtBoardListModel");
     qmlRegisterType<ContentLayerListModel>("MOZA.DashboardEditor", 1, 0, "ContentLayerListModel");

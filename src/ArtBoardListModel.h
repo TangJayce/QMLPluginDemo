@@ -19,7 +19,8 @@ class ArtBoardListModel: public QAbstractListModel
     Q_PROPERTY(MOZA::DashboardEditor::ElementTree* tree READ tree WRITE setTree)
 public:
     enum ElementListModelRoles {
-        ELEMENT_ID = Qt::UserRole + 1
+        ELEMENT_ID = Qt::UserRole + 1,
+        HAS_CHILD
     };
 public:
     explicit ArtBoardListModel(QObject *parent = nullptr);

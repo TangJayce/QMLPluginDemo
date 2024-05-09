@@ -12,6 +12,7 @@
         <file>layout/MozaScrollBar.qml</file>
         <file>layout/MozaScrollView.qml</file>
         <file>layout/MozaRadiusRectangle.qml</file>
+        <file>layout/MozaResizableBox.qml</file>
         <file>icons/close_normal.svg</file>
         <file>icons/down_normal.svg</file>
         <file>icons/full_screen_normal.svg</file>
@@ -31,6 +32,7 @@
         <file>component/MeterDashboardElement.qml</file>
         <file>component/MozaDashboardElement.qml</file>
         <file>component/MozaTreeView.qml</file>
-        <file>layout/MozaResizableBox.qml</file>
+        <file>icons/icon_sub_enable.svg</file>
+        <file>component/GroupDashboardElement.qml</file>
     </qresource>
 </RCC>

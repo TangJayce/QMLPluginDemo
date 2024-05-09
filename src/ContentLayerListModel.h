@@ -21,8 +21,6 @@ public:
 //    Q_INVOKABLE int dragGapIndex(int idx);
 //    Q_INVOKABLE int itemIndexDepth(int itemIdx);
 //    Q_INVOKABLE void moveSingleItem(int itemIdx, int gapIdx);
-//    Q_INVOKABLE void toggleHide(int n);
-//    Q_INVOKABLE void toggleLock(int n);
 
 private:
     enum LayerListModelRoles {

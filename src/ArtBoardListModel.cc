@@ -11,16 +11,20 @@ namespace MOZA::DashboardEditor
 ArtBoardListModel::ArtBoardListModel(QObject *parent) : QAbstractListModel(parent)
 {
     m_roleNames.insert(ELEMENT_ID, "elementID");
+    m_roleNames.insert(HAS_CHILD, "hasChild");
 }
 
 QVariant ArtBoardListModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row(), size = m_elements.size();
     if (row < 0 || row >= size) { return {}; }
+    int id = m_elements.at(size - 1 - row);
 
     switch (role) {
         case ELEMENT_ID:
-            return m_elements.at(size - 1 - row);
+            return id;
+        case HAS_CHILD:
+            return m_tree->getNodeByID(id)->hasChild();
         default:
             return {};
     }
@@ -67,7 +71,7 @@ void ArtBoardListModel::resetElements()
 {
     emit beginResetModel();
     if (m_tree) {
-        m_elements = m_tree->getElementListByDFS(false);
+        m_elements = m_tree->getLeafNodeListByDFS();
     } else {
         m_elements.clear();
     }

@@ -3,11 +3,6 @@ import QtQuick.Shapes 1.15
 
 MozaDashboardElement {
     id: control
-    xOffset: elementID % 7 * 80
-    yOffset: elementID % 7 * 60
-
-    width: 120
-    height: elementID % 40 + 40
     property int borderWidth: 2
 
     Shape {

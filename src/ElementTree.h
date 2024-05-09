@@ -54,6 +54,7 @@ public:
     bool hasNodeID(int id);
     QList<int> getSortedElementList() { return m_uniqueCheck.keys(); }
     QList<int> getElementListByDFS(bool hasRoot = true);
+    QList<int> getLeafNodeListByDFS();
     QList<int> getChildrenElements(int id);
 
     // -1表示插到最后
@@ -68,7 +69,7 @@ Q_SIGNALS:
     void elementMoved();
 
 private:
-    void dfs(QList<int> &list, MozaTreeNode *node);
+    void dfs(QList<int> &list, MozaTreeNode *node, bool onlyLeaf = false);
 
 private:
     MozaTreeNode* m_root{};
