@@ -32,6 +32,8 @@ public:
     void resetBoundary(qreal x, qreal y, qreal w, qreal h, int angle);
     bool isContainPoint(const QPointF &p);
     bool isOverlap(qreal startX, qreal startY, qreal stopX, qreal stopY);
+    bool isContainedInRectangle(qreal startX, qreal startY, qreal stopX, qreal stopY);
+    static bool isInside(const QPointF &p, qreal minX, qreal maxX, qreal minY, qreal maxY);
 
     bool selected() const noexcept { return m_selected; }
     bool parentSelected() const noexcept { return m_parentSelected; }
@@ -82,7 +84,10 @@ signals:
 private:
     // 计算两个向量的叉积, AB x AP
     static qreal crossProduct(const QPointF &a, const QPointF &b, const QPointF &p);
-    static bool isInside(const QPointF &p, qreal minX, qreal maxX, qreal minY, qreal maxY);
+    // 检查点 C 和 D 是否在线段 AB 的异侧
+    static inline bool onOppositeSides(const QPointF &a, const QPointF &b, const QPointF &c, const QPointF &d);
+    // 判断 线段p1p2 是否与 线段p3p4 相交
+    static inline bool segmentsIntersect(const QPointF &p1, const QPointF &p2, const QPointF &p3, const QPointF &p4);
 
 private:
     bool m_selected{};

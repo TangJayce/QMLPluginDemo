@@ -148,15 +148,21 @@ bool CustomPropertyGroup::isOverlap(qreal startX, qreal startY, qreal stopX, qre
 {
     auto p1 = QPointF(startX, startY);
     auto p2 = QPointF(startX, stopY);
-    auto p3 = QPointF(stopX, startY);
-    auto p4 = QPointF(stopX, stopY);
-    bool overlap = isContainPoint(p1) || isContainPoint(p2) || isContainPoint(p3) || isContainPoint(p4);
+    auto p3 = QPointF(stopX, stopY);
+    auto p4 = QPointF(stopX, startY);
+    return segmentsIntersect(p1, p2, m_p1, m_p2) || segmentsIntersect(p1, p2, m_p2, m_p3) || segmentsIntersect(p1, p2, m_p3, m_p4) || segmentsIntersect(p1, p2, m_p4, m_p1)
+        || segmentsIntersect(p2, p3, m_p1, m_p2) || segmentsIntersect(p2, p3, m_p2, m_p3) || segmentsIntersect(p2, p3, m_p3, m_p4) || segmentsIntersect(p2, p3, m_p4, m_p1)
+        || segmentsIntersect(p3, p4, m_p1, m_p2) || segmentsIntersect(p3, p4, m_p2, m_p3) || segmentsIntersect(p3, p4, m_p3, m_p4) || segmentsIntersect(p3, p4, m_p4, m_p1)
+        || segmentsIntersect(p4, p1, m_p1, m_p2) || segmentsIntersect(p4, p1, m_p2, m_p3) || segmentsIntersect(p4, p1, m_p3, m_p4) || segmentsIntersect(p4, p1, m_p4, m_p1);
+}
+
+bool CustomPropertyGroup::isContainedInRectangle(qreal startX, qreal startY, qreal stopX, qreal stopY)
+{
     qreal minX = qMin(startX, stopX);
     qreal maxX = qMax(startX, stopX);
     qreal minY = qMin(startY, stopY);
     qreal maxY = qMax(startY, stopY);
-    return overlap ||
-        isInside(m_p1, minX, maxX, minY, maxY) ||
+    return isInside(m_p1, minX, maxX, minY, maxY) ||
         isInside(m_p2, minX, maxX, minY, maxY) ||
         isInside(m_p3, minX, maxX, minY, maxY) ||
         isInside(m_p4, minX, maxX, minY, maxY);
@@ -165,6 +171,16 @@ bool CustomPropertyGroup::isOverlap(qreal startX, qreal startY, qreal stopX, qre
 bool CustomPropertyGroup::isInside(const QPointF &p, qreal minX, qreal maxX, qreal minY, qreal maxY)
 {
     return p.x() > minX && p.x() < maxX && p.y() > minY && p.y() < maxY;
+}
+
+bool CustomPropertyGroup::onOppositeSides(const QPointF &a, const QPointF &b, const QPointF &c, const QPointF &d)
+{
+    return crossProduct(a, b, c) * crossProduct(a, b, d) < 0;
+}
+
+bool CustomPropertyGroup::segmentsIntersect(const QPointF &p1, const QPointF &p2, const QPointF &p3, const QPointF &p4)
+{
+    return onOppositeSides(p1, p2, p3, p4) && onOppositeSides(p3, p4, p1, p2);
 }
 
 }

@@ -112,7 +112,7 @@ bool ElementInteractor::selectByBox(qreal startX, qreal startY, qreal stopX, qre
     for (int id : list) {
         auto cur = m_store->getCustomProperties(id);
         if (cur->hidden() || cur->parentHidden() || cur->locked() || cur->parentLocked()) { continue; }
-        if (cur->isOverlap(startX, startY, stopX, stopY)) {
+        if (cur->isOverlap(startX, startY, stopX, stopY) || cur->isContainedInRectangle(startX, startY, stopX, stopY)) {
             m_selectedElements.insert(id);
             cur->setSelected(true);
             auto children = m_tree->getChildrenElements(id);

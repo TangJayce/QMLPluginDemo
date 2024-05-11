@@ -76,12 +76,6 @@ Rectangle {
             }
         }
         onReleased: {
-            if (_p.operatorStatus === ArtBoard.OperatorStatus.Selecting) {
-                root.interactor.selectByBox(startX / ruler.deltaLength + ruler.xBegin,
-                                            startY / ruler.deltaLength + ruler.yBegin,
-                                            mouse.x / ruler.deltaLength + ruler.xBegin,
-                                            mouse.y / ruler.deltaLength + ruler.yBegin)
-            }
             if (_p.spaceKeyDown) {
                 _p.operatorStatus = ArtBoard.OperatorStatus.ToMoveArtboard
             } else {
@@ -90,7 +84,12 @@ Rectangle {
         }
         onPositionChanged: {
             if (!pressed) return
-            // 等比例移动
+            if (_p.operatorStatus === ArtBoard.OperatorStatus.Selecting) {
+                root.interactor.selectByBox(startX / ruler.deltaLength + ruler.xBegin,
+                                            startY / ruler.deltaLength + ruler.yBegin,
+                                            mouse.x / ruler.deltaLength + ruler.xBegin,
+                                            mouse.y / ruler.deltaLength + ruler.yBegin)
+            }
             let deltaX = (stopX - mouse.x) / ruler.deltaLength
             let deltaY = (stopY - mouse.y) / ruler.deltaLength
             if (_p.operatorStatus === ArtBoard.OperatorStatus.MovingArtboard) {
