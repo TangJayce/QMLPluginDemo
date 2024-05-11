@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.15
 
 import "../layout"
-import MOZA.DashboardEditor 1.0
+import MOZA.DashboardEditorModel 1.0
 
 Page {
     id: root

@@ -30,6 +30,8 @@ public:
     explicit CustomPropertyGroup(QObject *parent = nullptr): QObject(parent) {}
 
     void resetBoundary(qreal x, qreal y, qreal w, qreal h, int angle);
+    bool isContainPoint(const QPointF &p);
+    bool isOverlap(qreal startX, qreal startY, qreal stopX, qreal stopY);
 
     bool selected() const noexcept { return m_selected; }
     bool parentSelected() const noexcept { return m_parentSelected; }
@@ -76,6 +78,11 @@ signals:
     void xUpperChanged();
     void yLowerChanged();
     void yUpperChanged();
+
+private:
+    // 计算两个向量的叉积, AB x AP
+    static qreal crossProduct(const QPointF &a, const QPointF &b, const QPointF &p);
+    static bool isInside(const QPointF &p, qreal minX, qreal maxX, qreal minY, qreal maxY);
 
 private:
     bool m_selected{};

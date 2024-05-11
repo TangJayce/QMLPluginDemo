@@ -21,10 +21,10 @@ class ElementInteractor: public QObject
     Q_PROPERTY(MOZA::DashboardEditor::DashboardStore* store READ store WRITE setStore NOTIFY storeChanged)
     Q_PROPERTY(QList<int> selectedElements READ selectedElements NOTIFY selectedElementsChanged)
 
-    Q_PROPERTY(qreal xLower READ xLower NOTIFY xLowerChanged)
-    Q_PROPERTY(qreal xUpper READ xUpper NOTIFY xUpperChanged)
-    Q_PROPERTY(qreal yLower READ yLower NOTIFY yLowerChanged)
-    Q_PROPERTY(qreal yUpper READ yUpper NOTIFY yUpperChanged)
+    Q_PROPERTY(qreal xLower READ xLower WRITE setXLower NOTIFY xLowerChanged)
+    Q_PROPERTY(qreal xUpper READ xUpper WRITE setXUpper NOTIFY xUpperChanged)
+    Q_PROPERTY(qreal yLower READ yLower WRITE setYLower NOTIFY yLowerChanged)
+    Q_PROPERTY(qreal yUpper READ yUpper WRITE setYUpper NOTIFY yUpperChanged)
 public:
     explicit ElementInteractor(QObject *parent = nullptr);
 
@@ -43,10 +43,16 @@ public:
     void setYUpper(qreal yUpper);
 
     Q_INVOKABLE void switchSelect(int elementID);
+    Q_INVOKABLE bool switchSelect(qreal x, qreal y);
+    Q_INVOKABLE bool selectByBox(qreal startX, qreal startY, qreal stopX, qreal stopY);
     Q_INVOKABLE void attachSelect(int elementID);
     Q_INVOKABLE void clearSelect(bool notify = true);
+
+    Q_INVOKABLE void refreshBoundary();
     Q_INVOKABLE void toggleHide(int elementID);
     Q_INVOKABLE void toggleLock(int elementID);
+    Q_INVOKABLE int elementAtPosition(qreal x, qreal y);
+    Q_INVOKABLE bool isElementInSelectedList(int elementID) const { return m_selectedElements.contains(elementID); }
 
 Q_SIGNALS:
     void treeChanged();
@@ -56,6 +62,7 @@ Q_SIGNALS:
     void xUpperChanged();
     void yLowerChanged();
     void yUpperChanged();
+
 
 private:
     ElementTree *m_tree{};

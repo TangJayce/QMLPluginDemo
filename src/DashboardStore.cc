@@ -14,6 +14,11 @@ CustomPropertyGroup *DashboardStore::getCustomProperties(int id)
     if (!m_customProperties.contains(id)) {
         auto group = new CustomPropertyGroup(this);
         auto map = getInternalProperties(id);
+        group->resetBoundary(map->value("xOffset").toDouble(),
+                             map->value("yOffset").toDouble(),
+                             map->value("width").toDouble(),
+                             map->value("height").toDouble(),
+                             map->value("angle").toInt());
         connect(map, &QQmlPropertyMap::valueChanged,
                 group, [group, map](const QString &key, const QVariant &value){
             static QStringList list = {"xOffset", "yOffset", "width", "height", "angle"};

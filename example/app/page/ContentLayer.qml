@@ -1,6 +1,6 @@
 import QtQuick 2.15
 
-import MOZA.DashboardEditor 1.0
+import MOZA.DashboardEditorModel 1.0
 import "../layout"
 import "../component"
 
@@ -69,7 +69,7 @@ MozaTreeView {
             _p.highlightYAxis = cnt * delegateItem.height
         }
         onSwitchSelectItem: root.interactor.switchSelect(model.elementID)
-        // onAttachSelectItem: root.interactor.attachSelect(model.index)
+        onAttachSelectItem: root.interactor.attachSelect(model.elementID)
         // onMultipleSelectItem: root.interactor.multipleSelect(ListView.view.currentIndex, model.index)
         onToggleExpand: {
             if (model.expanded) {

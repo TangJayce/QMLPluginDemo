@@ -1,4 +1,4 @@
-module MOZA.DashboardEditor
+module MOZA.DashboardEditorModel
 plugin QMLPlugin
 typeinfo plugins.qmltypes
 MozaRectangle 1.0 MozaRectangle.qml

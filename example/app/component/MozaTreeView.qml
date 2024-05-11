@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import MOZA.DashboardEditor 1.0
+import MOZA.DashboardEditorModel 1.0
 import "../layout"
 
 MozaScrollView {

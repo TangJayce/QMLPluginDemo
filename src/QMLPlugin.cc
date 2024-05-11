@@ -25,15 +25,15 @@ void QMLPlugin::registerTypes(const char *uri)
 
 void QMLPlugin::globalRegisterTypes()
 {
-    qmlRegisterUncreatableType<ElementTree>("MOZA.DashboardEditor", 1, 0, "ElementTree", "Cannot create ElementTree");
-    qmlRegisterUncreatableType<DashboardStore>("MOZA.DashboardEditor", 1, 0, "DashboardStore", "Cannot create DashboardStore");
-    qmlRegisterUncreatableType<QQmlPropertyMap>("MOZA.DashboardEditor", 1, 0, "QmlPropertyMap", "Cannot create QmlPropertyMap");
-    qmlRegisterUncreatableType<CustomPropertyGroup>("MOZA.DashboardEditor", 1, 0, "CustomPropertyGroup", "Cannot create CustomPropertyGroup");
-    qmlRegisterType<ElementTreeModel>("MOZA.DashboardEditor", 1, 0, "ElementTreeModel");
-    qmlRegisterType<ArtBoardListModel>("MOZA.DashboardEditor", 1, 0, "ArtBoardListModel");
-    qmlRegisterType<ContentLayerListModel>("MOZA.DashboardEditor", 1, 0, "ContentLayerListModel");
-    qmlRegisterType<ElementInteractor>("MOZA.DashboardEditor", 1, 0, "ElementInteractor");
-    qmlRegisterSingletonType<DashboardEditorManager>("MOZA.DashboardEditor", 1, 0, "DashboardEditorManager",
+    qmlRegisterUncreatableType<ElementTree>("MOZA.DashboardEditorModel", 1, 0, "ElementTree", "Cannot create ElementTree");
+    qmlRegisterUncreatableType<DashboardStore>("MOZA.DashboardEditorModel", 1, 0, "DashboardStore", "Cannot create DashboardStore");
+    qmlRegisterUncreatableType<QQmlPropertyMap>("MOZA.DashboardEditorModel", 1, 0, "QmlPropertyMap", "Cannot create QmlPropertyMap");
+    qmlRegisterUncreatableType<CustomPropertyGroup>("MOZA.DashboardEditorModel", 1, 0, "CustomPropertyGroup", "Cannot create CustomPropertyGroup");
+    qmlRegisterType<ElementTreeModel>("MOZA.DashboardEditorModel", 1, 0, "ElementTreeModel");
+    qmlRegisterType<ArtBoardListModel>("MOZA.DashboardEditorModel", 1, 0, "ArtBoardListModel");
+    qmlRegisterType<ContentLayerListModel>("MOZA.DashboardEditorModel", 1, 0, "ContentLayerListModel");
+    qmlRegisterType<ElementInteractor>("MOZA.DashboardEditorModel", 1, 0, "ElementInteractor");
+    qmlRegisterSingletonType<DashboardEditorManager>("MOZA.DashboardEditorModel", 1, 0, "DashboardEditorManager",
                                                      [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         return DashboardEditorManager::instance();
     });

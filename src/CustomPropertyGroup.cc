@@ -124,4 +124,47 @@ void CustomPropertyGroup::resetBoundary(qreal x, qreal y, qreal w, qreal h, int 
     setYUpper(std::max({p1.y(), p2.y(), p3.y(), p4.y()}));
 }
 
+bool CustomPropertyGroup::isContainPoint(const QPointF &p)
+{
+    int positive = 0;
+    if (m_p1 == m_p2 || m_p2 == m_p3 || m_p3 == m_p4 || m_p4 == m_p1) { return false; }
+    positive += crossProduct(m_p1, m_p2, p) > 0;
+    positive += crossProduct(m_p2, m_p3, p) > 0;
+    positive += crossProduct(m_p3, m_p4, p) > 0;
+    positive += crossProduct(m_p4, m_p1, p) > 0;
+    return positive == 0 || positive == 4;
+}
+
+qreal CustomPropertyGroup::crossProduct(const QPointF &a, const QPointF &b, const QPointF &p)
+{
+    qreal ax = b.x() - a.x();
+    qreal ay = b.y() - a.y();
+    qreal bx = p.x() - a.x();
+    qreal by = p.y() - a.y();
+    return ax * by - ay * bx;
+}
+
+bool CustomPropertyGroup::isOverlap(qreal startX, qreal startY, qreal stopX, qreal stopY)
+{
+    auto p1 = QPointF(startX, startY);
+    auto p2 = QPointF(startX, stopY);
+    auto p3 = QPointF(stopX, startY);
+    auto p4 = QPointF(stopX, stopY);
+    bool overlap = isContainPoint(p1) || isContainPoint(p2) || isContainPoint(p3) || isContainPoint(p4);
+    qreal minX = qMin(startX, stopX);
+    qreal maxX = qMax(startX, stopX);
+    qreal minY = qMin(startY, stopY);
+    qreal maxY = qMax(startY, stopY);
+    return overlap ||
+        isInside(m_p1, minX, maxX, minY, maxY) ||
+        isInside(m_p2, minX, maxX, minY, maxY) ||
+        isInside(m_p3, minX, maxX, minY, maxY) ||
+        isInside(m_p4, minX, maxX, minY, maxY);
+}
+
+bool CustomPropertyGroup::isInside(const QPointF &p, qreal minX, qreal maxX, qreal minY, qreal maxY)
+{
+    return p.x() > minX && p.x() < maxX && p.y() > minY && p.y() < maxY;
+}
+
 }
