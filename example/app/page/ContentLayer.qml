@@ -19,10 +19,13 @@ MozaTreeView {
     //     z: 100
     //     visible: _p.hasItemDrag
     // }
+    treeModel: LayerListModel {
+        tree: root.tree
+    }
     delegate: MozaContentLayerItem {
         id: delegateItem
-        property var props: DashboardEditorManager.getDashboardStore().getCustomProperties(model.elementID)
-        text: "value: " + model.elementID + ", depth: " + model.depth
+        property var props: DashboardEditorManager.getDashboardStore().getCustomProperties(model.value)
+        text: "value: " + model.value + ", depth: " + model.depth
         width: root.availableWidth
         enableHide: root.enableHide
         enableLock: root.enableLock
@@ -41,8 +44,11 @@ MozaTreeView {
             if (props.parentSelected) return 2
             return 0
         }
-        onToggleHide: root.interactor.toggleHide(model.elementID)
-        onToggleLock: root.interactor.toggleLock(model.elementID)
+        onToggleHide: root.interactor.toggleHide(model.value)
+        onToggleLock: root.interactor.toggleLock(model.value)
+        onSwitchSelectItem: root.interactor.switchSelect(model.value)
+        onAttachSelectItem: root.interactor.attachSelect(model.value)
+        // onMultipleSelectItem: root.interactor.multipleSelect(ListView.view.currentIndex, model.index)
         // highlighted: model.index === root.treeModel.frameIndex
         // onHoveredChanged: {
         //     if (hovered && !_p.hasItemDrag) {
@@ -68,9 +74,6 @@ MozaTreeView {
             _p.gapIndex = cnt
             _p.highlightYAxis = cnt * delegateItem.height
         }
-        onSwitchSelectItem: root.interactor.switchSelect(model.elementID)
-        onAttachSelectItem: root.interactor.attachSelect(model.elementID)
-        // onMultipleSelectItem: root.interactor.multipleSelect(ListView.view.currentIndex, model.index)
         onToggleExpand: {
             if (model.expanded) {
                 root.treeModel.collapseRow(index)

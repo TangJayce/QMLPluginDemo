@@ -20,7 +20,7 @@ MozaScrollView {
 
     contentItem: ListView {
         id: contentListView
-        model: ElementTreeModel {
+        model: MozaTreeModel {
             tree: control.tree
         }
         populate: Transition {

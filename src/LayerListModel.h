@@ -4,16 +4,16 @@
 
 #pragma once
 
-#include "ElementTreeModel.h"
+#include "MozaTreeModel.h"
 
 namespace MOZA::DashboardEditor
 {
 
-class ContentLayerListModel: public ElementTreeModel
+class LayerListModel: public MozaTreeModel
 {
     Q_OBJECT
 public:
-    explicit ContentLayerListModel(QObject *parent = nullptr);
+    explicit LayerListModel(QObject *parent = nullptr);
 
 //    Q_INVOKABLE void switchSelect(int n);
 //    Q_INVOKABLE void attachSelect(int n);
@@ -24,11 +24,9 @@ public:
 
 private:
     enum LayerListModelRoles {
-        HAS_TOP_RADIUS = ElementTreeModel::HAS_CHILD + 1,
+        HAS_TOP_RADIUS = MozaTreeModel::HAS_CHILD + 1,
         HAS_BOTTOM_RADIUS,
-        SELECT_STATUS,
-        HIDE_STATUS,
-        LOCK_STATUS
+        SELECT_STATUS
     };
 };
 

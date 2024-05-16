@@ -5,11 +5,13 @@
 #pragma once
 
 #include <QObject>
-#include "ElementTreeModel.h"
+#include "MozaTreeModel.h"
 #include "DashboardStore.h"
 
 namespace MOZA::DashboardEditor
 {
+
+class ElementTree;
 
 class DashboardEditorManager: public QObject
 {

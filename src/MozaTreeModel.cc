@@ -2,30 +2,30 @@
 // Created by Jayce on 2024/3/20.
 //
 
-#include "ElementTreeModel.h"
-#include "ElementTree.h"
+#include "MozaTreeModel.h"
+#include "MozaTree.h"
 #include "ArtBoardListModel.h"
 
 namespace MOZA::DashboardEditor
 {
 
-ElementTreeModel::ElementTreeModel(QObject *parent)
+MozaTreeModel::MozaTreeModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    m_roleNames.insert(ELEMENT_ID, "elementID");
+    m_roleNames.insert(VALUE, "value");
     m_roleNames.insert(DEPTH, "depth");
     m_roleNames.insert(EXPANDED, "expanded");
     m_roleNames.insert(HAS_CHILD, "hasChild");
 }
 
-QVariant ElementTreeModel::data(const QModelIndex &index, int role) const
+QVariant MozaTreeModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if (row < 0 || row >= m_currentItems.size()) { return {}; }
 
     const auto &item = m_currentItems.at(row);
     switch (role) {
-        case ELEMENT_ID:
+        case VALUE:
             return item.value->data();
         case DEPTH:
             return item.depth;
@@ -33,54 +33,40 @@ QVariant ElementTreeModel::data(const QModelIndex &index, int role) const
             return item.expanded;
         case HAS_CHILD:
             return item.value->hasChild();
-//        case HAS_TOP_RADIUS:
-//            if (row == 0) return true;
-//            elementID = m_currentItems.at(row - 1).value->data();
-//            return m_elements->getProperties(elementID)->selectStatus() == MozaElementAttachProperty::NONE;
-//        case HAS_BOTTOM_RADIUS:
-//            if (row == m_currentItems.size() - 1) return true;
-//            elementID = m_currentItems.at(row + 1).value->data();
-//            return m_elements->getProperties(elementID)->selectStatus() == MozaElementAttachProperty::NONE;
-//        case SELECT_STATUS:
-//            return m_elements->getProperties(elementID)->selectStatus();
-//        case HIDE_STATUS:
-//            return m_elements->getProperties(elementID)->hideStatus();
-//        case LOCK_STATUS:
-//            return m_elements->getProperties(elementID)->lockStatus();
         default:
             return {};
     }
 }
 
-void ElementTreeModel::dfs(MozaTreeNode *item, int depth)
+void MozaTreeModel::dfs(MozaTreeNode *item, int depth)
 {
     for (int i = 0; i < item->childCount(); ++i) {
         auto cur = item->child(i);
         m_currentItems.append({cur, depth, cur->hasChild()});
         if (cur->hasChild()) {
-            m_expandedItems.insert(cur->data());
+            m_expandedItems.insert(cur);
             dfs(cur, depth + 1);
         }
     }
 }
 
-void ElementTreeModel::setTree(ElementTree *tree)
+void MozaTreeModel::setTree(MozaTree *tree)
 {
     if (m_tree == tree) { return; }
     m_tree = tree;
-    if (m_tree != nullptr && m_tree->getRoot() != nullptr && m_tree->getRoot()->hasChild()) {
-        dfs(m_tree->getRoot(), 1);
+    if (m_tree != nullptr && m_tree->root() != nullptr && m_tree->root()->hasChild()) {
+        dfs(m_tree->root(), 1);
     }
     emit treeChanged();
 }
 
-void ElementTreeModel::expandRow(int n)
+void MozaTreeModel::expandRow(int n)
 {
     if (n < 0 || n >= m_currentItems.size()) { return; }
     auto &item = m_currentItems[n];
     if (item.expanded) { return; }
     item.expanded = true;
-    m_expandedItems.insert(item.value->data());
+    m_expandedItems.insert(item.value);
     emit dataChanged(createIndex(n, 0), createIndex(n, 0), {EXPANDED});
 
     if (!item.value->hasChild()) { return; }
@@ -91,13 +77,13 @@ void ElementTreeModel::expandRow(int n)
     endInsertRows();
 }
 
-void ElementTreeModel::collapseRow(int n)
+void MozaTreeModel::collapseRow(int n)
 {
     if (n < 0 || n >= m_currentItems.size()) { return; }
     auto &item = m_currentItems[n];
     if (!item.expanded) { return; }
     item.expanded = false;
-    m_expandedItems.remove(item.value->data());
+    m_expandedItems.remove(item.value);
     emit dataChanged(createIndex(n, 0), createIndex(n, 0), {EXPANDED});
 
     if (!item.value->hasChild()) { return; }
@@ -108,33 +94,33 @@ void ElementTreeModel::collapseRow(int n)
     endRemoveRows();
 }
 
-int ElementTreeModel::itemIndex(int elementID) const
+int MozaTreeModel::itemIndex(MozaTreeNode* item) const
 {
-    if (elementID <= 0 || m_currentItems.isEmpty()) { return -1; }
+    if (item == nullptr || m_currentItems.isEmpty()) { return -1; }
 
     const int totalCount = m_currentItems.size();
     int localCount = qMin(m_lastItemIndex - 1, totalCount - m_lastItemIndex), idx;
 
     for (int i = 0; i < localCount; ++i) {
         idx = m_lastItemIndex + i;
-        if (m_currentItems.at(idx).value->data() == elementID) {
+        if (m_currentItems.at(idx).value == item) {
             m_lastItemIndex = idx;
             return m_lastItemIndex;
         }
         idx = m_lastItemIndex - i - 1;
-        if (m_currentItems.at(idx).value->data() == elementID) {
+        if (m_currentItems.at(idx).value == item) {
             m_lastItemIndex = idx;
             return m_lastItemIndex;
         }
     }
     for (int j = qMax(0, m_lastItemIndex + localCount); j < totalCount; ++j) {
-        if (m_currentItems.at(j).value->data() == elementID) {
+        if (m_currentItems.at(j).value == item) {
             m_lastItemIndex = j;
             return j;
         }
     }
     for (int j = qMin(totalCount, m_lastItemIndex - localCount) - 1; j >= 0; --j) {
-        if (m_currentItems.at(j).value->data() == elementID) {
+        if (m_currentItems.at(j).value == item) {
             m_lastItemIndex = j;
             return j;
         }
@@ -142,24 +128,24 @@ int ElementTreeModel::itemIndex(int elementID) const
     return -1;
 }
 
-int ElementTreeModel::lastChildIndex(MozaTreeNode *node) const
+int MozaTreeModel::lastChildIndex(MozaTreeNode *node) const
 {
-    if (!m_expandedItems.contains(node->data())) { return itemIndex(node->data()); }
+    if (!m_expandedItems.contains(node)) { return itemIndex(node); }
     MozaTreeNode *parent = node->parentNode();
     MozaTreeNode *nextSiblingNode{};
-    while (parent != m_tree->getRoot()) {
+    while (parent != m_tree->root()) {
         nextSiblingNode = parent->sibling(parent->row() + 1);
         if (nextSiblingNode != nullptr) { break; }
         parent = parent->parentNode();
     }
-    int endIndex = nextSiblingNode ? itemIndex(nextSiblingNode->data()) : m_currentItems.size();
+    int endIndex = nextSiblingNode ? itemIndex(nextSiblingNode) : m_currentItems.size();
     return endIndex - 1;
 }
 
-int ElementTreeModel::itemIndexDepth(int itemIdx)
+int MozaTreeModel::itemIndexDepth(int n)
 {
-    if (itemIdx < 0 || itemIdx >= m_currentItems.size()) { return 0; }
-    return m_currentItems.at(itemIdx).depth;
+    if (n < 0 || n >= m_currentItems.size()) { return 0; }
+    return m_currentItems.at(n).depth;
 }
 
 //int MozaTreeModel::dragGapIndex(int idx)
@@ -171,10 +157,10 @@ int ElementTreeModel::itemIndexDepth(int itemIdx)
 //    return itemIndex(m_currentItems.at(idx).value->parentNode()->data());
 //}
 
-int ElementTreeModel::countVisibleItem(MozaTreeNode *node) const
+int MozaTreeModel::countVisibleItem(MozaTreeNode *node) const
 {
     if (node == nullptr) { return 0; }
-    if (!node->hasChild() || !m_expandedItems.contains(node->data())) { return 1; }
+    if (!node->hasChild() || !m_expandedItems.contains(node)) { return 1; }
     int sum = 1;
     for (int i = 0; i < node->childCount(); ++i) {
         sum += countVisibleItem(node->child(i));
@@ -182,13 +168,13 @@ int ElementTreeModel::countVisibleItem(MozaTreeNode *node) const
     return sum;
 }
 
-void ElementTreeModel::showModelChildItems(const ElementTreeModel::TreeItem &item, int &startIdx)
+void MozaTreeModel::showModelChildItems(const MozaTreeModel::TreeItem &item, int &startIdx)
 {
     int childrenCount = item.value->childCount();
     for (int i = 0; i < childrenCount; ++i) {
         MozaTreeNode *cur = item.value->child(i);
 
-        const bool expanded = m_expandedItems.contains(cur->data());
+        const bool expanded = m_expandedItems.contains(cur);
         const TreeItem treeItem {cur, item.depth + 1, expanded};
         m_currentItems.insert(++startIdx, treeItem);
         if (expanded) { showModelChildItems(treeItem, startIdx); }

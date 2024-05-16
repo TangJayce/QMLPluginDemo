@@ -5,35 +5,10 @@
 #pragma once
 
 #include <QJsonObject>
+#include "MozaTree.h"
 
 namespace MOZA::DashboardEditor
 {
-
-class MozaTreeNode
-{
-public:
-    explicit MozaTreeNode(int data);
-    ~MozaTreeNode();
-
-    void appendChild(MozaTreeNode *child);
-    void insertChild(int index, MozaTreeNode *child);
-    void removeChild(int row);
-    MozaTreeNode *child(int row);
-    MozaTreeNode *sibling(int row);
-    int childCount() const;
-    int data() const;
-    int row() const;
-    MozaTreeNode *parentNode();
-    bool hasChild() const;
-    int inParentIndex() const { return m_inParentIndex; }
-    void setInParentIndex(int inParentIndex) { m_inParentIndex = inParentIndex; }
-
-private:
-    QList<MozaTreeNode*> m_childItems;
-    int m_itemData;
-    MozaTreeNode *m_parentItem{};
-    int m_inParentIndex{-1};
-};
 
 class ElementBuilder
 {
@@ -41,7 +16,7 @@ public:
     virtual void processElement(int id, const QJsonObject &obj) = 0;
 };
 
-class ElementTree: public QObject
+class ElementTree: public MozaTree
 {
     Q_OBJECT
 public:
@@ -72,7 +47,6 @@ private:
     void dfs(QList<int> &list, MozaTreeNode *node, bool onlyLeaf = false);
 
 private:
-    MozaTreeNode* m_root{};
     QMap<int, MozaTreeNode*> m_uniqueCheck;
 };
 

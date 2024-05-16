@@ -50,11 +50,11 @@ void ArtBoardListModel::setTree(ElementTree *tree)
 
 void ArtBoardListModel::appendElement(MozaTreeNode *node)
 {
-    int idx = itemIndex(node->parentNode()->data());
+    int idx = itemIndex(node->parentNode()->data().toInt());
     if (idx == -1) { return; }
-    idx = idx + node->inParentIndex();
+    idx = idx + node->row();
     emit beginInsertRows(QModelIndex(), idx, idx);
-    m_elements.insert(idx, node->data());
+    m_elements.insert(idx, node->data().toInt());
     emit endInsertRows();
 }
 

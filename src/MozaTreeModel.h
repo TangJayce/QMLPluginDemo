@@ -10,27 +10,27 @@
 namespace MOZA::DashboardEditor
 {
 
-class ElementTree;
+class MozaTree;
 class MozaTreeNode;
 
 // 使用ListModel实现树状效果
-class ElementTreeModel: public QAbstractListModel
+class MozaTreeModel: public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(MOZA::DashboardEditor::ElementTree* tree READ tree WRITE setTree NOTIFY treeChanged)
+    Q_PROPERTY(MOZA::DashboardEditor::MozaTree* tree READ tree WRITE setTree NOTIFY treeChanged)
 public:
-    explicit ElementTreeModel(QObject *parent = nullptr);
+    explicit MozaTreeModel(QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override { return m_roleNames; }
     int rowCount(const QModelIndex &parent) const override { return m_currentItems.size(); }
     QVariant data(const QModelIndex &index, int role) const override;
 
-    ElementTree* tree() const noexcept { return m_tree; }
-    void setTree(ElementTree *tree);
+    MozaTree* tree() const noexcept { return m_tree; }
+    void setTree(MozaTree *tree);
 
     Q_INVOKABLE void expandRow(int n);
     Q_INVOKABLE void collapseRow(int n);
-    Q_INVOKABLE int itemIndexDepth(int itemIdx);
+    Q_INVOKABLE int itemIndexDepth(int n);
 //    Q_INVOKABLE int dragGapIndex(int idx);
 
 //    Q_INVOKABLE void switchSelect(int n);
@@ -38,7 +38,7 @@ public:
 //    Q_INVOKABLE void multipleSelect(int prev, int cur);
 //    Q_INVOKABLE void moveSingleItem(int itemIdx, int gapIdx);
 
-    int itemIndex(int elementID) const;
+    int itemIndex(MozaTreeNode* item) const;
     int countVisibleItem(MozaTreeNode *node) const;
     int lastChildIndex(MozaTreeNode *node) const;
 
@@ -47,7 +47,7 @@ Q_SIGNALS:
 
 protected:
     enum TreeModelRoles {
-        ELEMENT_ID = Qt::UserRole + 1,
+        VALUE = Qt::UserRole + 1,
         DEPTH,
         EXPANDED,
         HAS_CHILD
@@ -61,10 +61,10 @@ protected:
     void showModelChildItems(const TreeItem &item, int &startIdx);
 
 protected:
-    ElementTree* m_tree{};
+    MozaTree* m_tree{};
     QHash<int, QByteArray> m_roleNames;
     QList<TreeItem> m_currentItems;
-    QSet<int> m_expandedItems;
+    QSet<MozaTreeNode*> m_expandedItems;
     mutable int m_lastItemIndex{};
 };
 
